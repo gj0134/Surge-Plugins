@@ -1,15 +1,13 @@
 #!name=知乎网页净化
 #!desc=屏蔽知乎网页端信息流与侧栏广告，并隐藏顶部 AI Works、故事入口
-#!system=macOS
+#!system=mac
 #!category=去广告
-#!author=gujiang
-#!homepage=https://github.com/gj0134/Surge-Plugins
 
 [Rule]
 # 知乎广告曝光/点击统计
-DOMAIN,sugar.zhihu.com,REJECT-DROP
-DOMAIN,zhihu-web-analytics.zhihu.com,REJECT-DROP
-URL-REGEX,^https:\/\/www\.zhihu\.com\/commercial_api\/,REJECT-DROP
+DOMAIN,sugar.zhihu.com,REJECT
+DOMAIN,zhihu-web-analytics.zhihu.com,REJECT
+URL-REGEX,^https:\/\/www\.zhihu\.com\/commercial_api\/,REJECT
 
 [Script]
 # 给网页注入隐藏规则；非 HTML 响应会直接放行

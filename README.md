@@ -12,7 +12,7 @@
 在 Surge 的模块页面选择“从 URL 安装”，粘贴：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule?v=1.0.1
 ```
 
 启用模块后，确认 Surge 的「脚本」和「MITM」功能已启用，并已在 macOS 中安装、信任 Surge 的 MITM 证书，然后重新载入知乎页面。
