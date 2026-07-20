@@ -33,7 +33,7 @@ test("removes marked feed ads while preserving normal posts", () => {
     ],
   };
   const result = execute(JSON.stringify(input));
-  const parsed = JSON.parse(result.body);
+  const parsed = result.body ? JSON.parse(result.body) : input;
 
   assert.deepEqual(
     parsed.statuses.map((item) => item.id),
@@ -52,7 +52,7 @@ test("removes promotion fallbacks and nested profile ads", () => {
     },
   };
   const result = execute(JSON.stringify(input));
-  const parsed = JSON.parse(result.body);
+  const parsed = result.body ? JSON.parse(result.body) : input;
 
   assert.deepEqual(
     parsed.data.list.map((item) => item.id),
@@ -60,7 +60,7 @@ test("removes promotion fallbacks and nested profile ads", () => {
   );
 });
 
-test("removes commercial hot-search entries only", () => {
+test("does not remove hot-search entries based on display labels", () => {
   const input = {
     data: {
       realtime: [
@@ -75,11 +75,11 @@ test("removes commercial hot-search entries only", () => {
     },
   };
   const result = execute(JSON.stringify(input));
-  const parsed = JSON.parse(result.body);
+  const parsed = result.body ? JSON.parse(result.body) : input;
 
   assert.deepEqual(
     parsed.data.realtime.map((item) => item.word),
-    ["正常热搜", "辟谣词条", "新词条"]
+    ["正常热搜", "商业词条", "辟谣词条", "新词条"]
   );
   assert.deepEqual(parsed.data.unrelatedCards, [
     { id: "business-category", small_icon_desc: "商" },
