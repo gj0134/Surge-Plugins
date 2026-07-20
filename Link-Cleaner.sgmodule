@@ -4,7 +4,7 @@
 #!category=隐私保护
 
 [Script]
-网页链接净化 = type=http-request,pattern=^https?:\/\/(?:www\.zhihu\.com|(?:www\.)?weibo\.com|m\.weibo\.cn|(?:www\.|m\.|space\.)?bilibili\.com)(?:\/|\?|$),timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Link-Cleaner.js
+网页链接净化 = type=http-request,pattern=^https?:\/\/(?:www\.zhihu\.com|(?:www\.)?weibo\.com|m\.weibo\.cn|(?:www\.|m\.|space\.)?bilibili\.com)(?:\/|\?|$),timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/d3397482ed3101c41e6f1fb04fc5fcd1312eea15/Link-Cleaner.js
 
 [MITM]
 hostname = %APPEND% www.zhihu.com, weibo.com, www.weibo.com, m.weibo.cn, bilibili.com, www.bilibili.com, m.bilibili.com, space.bilibili.com
