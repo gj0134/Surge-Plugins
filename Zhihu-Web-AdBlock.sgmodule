@@ -11,10 +11,10 @@ URL-REGEX,^https:\/\/www\.zhihu\.com\/commercial_api\/,REJECT
 
 [Script]
 # 清除问题页内嵌广告数据，并给网页注入隐藏规则
-知乎网页界面净化 = type=http-response,pattern=^https:\/\/www\.zhihu\.com\/(?!api\/),requires-body=true,max-size=2097152,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/91c3306551f7ab73ddc1edb0a71af1cd492b667c/Zhihu-Web-AdBlock.js
+知乎网页界面净化 = type=http-response,pattern=^https:\/\/www\.zhihu\.com\/(?!api\/),requires-body=true,max-size=2097152,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/a8dfcc4e5a4a3756d4b6d64423916a960c19700b/Zhihu-Web-AdBlock.js
 
 # HAR 已确认：广告为 feed_advert；盐选使用明确付费字段过滤
-知乎信息流广告与盐选过滤 = type=http-response,pattern=^https:\/\/www\.zhihu\.com\/api\/v3\/(?:feed\/topstory\/recommend|moments(?:\/[^?]*)?)(?:\?|$),requires-body=true,max-size=524288,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/91c3306551f7ab73ddc1edb0a71af1cd492b667c/Zhihu-Web-AdBlock.js
+知乎信息流广告与盐选过滤 = type=http-response,pattern=^https:\/\/www\.zhihu\.com\/api\/v3\/(?:feed\/topstory\/recommend|moments(?:\/[^?]*)?)(?:\?|$),requires-body=true,max-size=524288,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/a8dfcc4e5a4a3756d4b6d64423916a960c19700b/Zhihu-Web-AdBlock.js
 
 [MITM]
 hostname = %APPEND% www.zhihu.com
