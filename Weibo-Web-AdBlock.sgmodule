@@ -13,7 +13,7 @@ DOMAIN,rum.h5.weibo.cn,REJECT
 
 [Script]
 # 对 HAR 已确认的信息流、主页微博和热搜结构做响应过滤
-微博信息流与热搜广告过滤 = type=http-response,pattern=^https:\/\/www\.weibo\.com\/ajax\/(?:feed|statuses|search|side)\/[^?]+(?:\?|$),requires-body=true,max-size=2097152,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/a8dfcc4e5a4a3756d4b6d64423916a960c19700b/Weibo-Web-AdBlock.js
+微博信息流与热搜广告过滤 = type=http-response,pattern=^https:\/\/www\.weibo\.com\/ajax\/(?:feed|statuses|search|side)\/[^?]+(?:\?|$),requires-body=true,max-size=2097152,timeout=5,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/84611f8/Weibo-Web-AdBlock.js
 
 [MITM]
 hostname = %APPEND% www.weibo.com, weibo.com
