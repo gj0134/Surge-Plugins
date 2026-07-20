@@ -4,7 +4,7 @@
  * 规则来自 2026-07-20 的 www.weibo.com HAR：
  * - 首页信息流广告：数组项 isAd === 1/true，并通常带 promotion
  * - 个人主页推广微博：data.list[].isAd === true
- * - 热搜商业广告：匹配 HAR 中稳定的组合标记（商 + rank:null + dot_icon:1）
+ * - 热搜商业广告：匹配 HAR 中稳定的结构标记（rank:null + dot_icon:1），不依赖任何文案
  */
 
 (function () {
@@ -34,10 +34,7 @@
     if (isObject(value.ad_info) && Object.keys(value.ad_info).length > 0) return true;
     if (typeof value.ad_url === "string" && value.ad_url.length > 0) return true;
     return (
-      value.rank === null &&
-      value.dot_icon === 1 &&
-      typeof value.small_icon_desc === "string" &&
-      value.small_icon_desc.trim() === "商"
+      value.rank === null && value.dot_icon === 1
     );
   }
 
