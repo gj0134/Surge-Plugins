@@ -17,7 +17,7 @@
 从 URL 安装：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Link-Cleaner.sgmodule?v=1.0.0
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Link-Cleaner.sgmodule
 ```
 
 ## 本地开发保护
@@ -32,7 +32,7 @@ https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Link-Cleaner.sgmodul
 从 URL 安装：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Local-Dev-Protection.sgmodule?v=1.0.0
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Local-Dev-Protection.sgmodule
 ```
 
 注意：`skip-proxy` 是 macOS“设置为系统代理”时的兼容性绕过项；若同时开启增强模式，流量仍可能进入 Surge 虚拟网卡，但会由模块顶部的 `DIRECT` 规则直连。
@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Local-Dev-Protection
 在 Surge 的模块页面选择“从 URL 安装”，粘贴：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule?v=2.0.1
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule
 ```
 
 启用模块后，确认 Surge 的「脚本」和「MITM」主开关已启用，并已在 macOS 中安装、信任 Surge 的 MITM 证书，然后重新载入知乎页面。模块只能把 `www.zhihu.com` 加入 MITM 主机名，不能替你打开全局 MITM 主开关。
@@ -78,7 +78,7 @@ https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sg
 从 URL 安装：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Weibo-Web-AdBlock.sgmodule?v=1.0.0
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Weibo-Web-AdBlock.sgmodule
 ```
 
 “个人主页访问上报”只能做客户端尽力阻断：模块会阻止 HAR 中可见的行为、阅读时长和 RUM 请求，但如果微博服务器在返回主页资料时直接记录访问，本地模块无法保证完全消除。
