@@ -23,6 +23,14 @@ function execute(response) {
   return result;
 }
 
+function readInitialData(html) {
+  const match = html.match(
+    /<script\b[^>]*\bid=["']js-initialData["'][^>]*>([\s\S]*?)<\/script>/i
+  );
+  assert.ok(match, "expected js-initialData in HTML");
+  return JSON.parse(match[1]);
+}
+
 test("injects CSS for ads and the two unwanted top navigation links", () => {
   const input = "<!doctype html><html><head></head><body></body></html>";
   const output = execute({
@@ -34,6 +42,45 @@ test("injects CSS for ads and the two unwanted top navigation links", () => {
   assert.match(output.body, /project-square/);
   assert.match(output.body, /fiore\/h5\/vip-web/);
   assert.match(output.body, /TopstoryItem--advertCard/);
+});
+
+test("removes question-page advertisements from embedded initial data", () => {
+  const initialData = {
+    initialState: {
+      question: {
+        adverts: {
+          3: {
+            ad: {
+              id: 3758256,
+              creatives: [{ title: "知乎日报广告" }],
+            },
+            adjson: JSON.stringify({ title: "知乎日报广告" }),
+          },
+        },
+        entities: { questions: { 1: { title: "正常问题" } } },
+      },
+      viewer: { name: "<保留>&" },
+    },
+  };
+  const input =
+    '<!doctype html><html><head></head><body><script id="js-initialData" type="text/json">' +
+    JSON.stringify(initialData) +
+    "</script></body></html>";
+  const output = execute({
+    headers: { "content-type": "text/html; charset=utf-8" },
+    body: input,
+  });
+  const parsed = readInitialData(output.body);
+
+  assert.deepEqual(parsed.initialState.question.adverts, {});
+  assert.equal(
+    parsed.initialState.question.entities.questions[1].title,
+    "正常问题"
+  );
+  assert.equal(parsed.initialState.viewer.name, "<保留>&");
+  assert.doesNotMatch(output.body, /知乎日报广告/);
+  assert.match(output.body, /\\u003C保留\\u003E\\u0026/);
+  assert.match(output.body, /surge-zhihu-web-adblock/);
 });
 
 test("removes marked ads while preserving normal feed items", () => {

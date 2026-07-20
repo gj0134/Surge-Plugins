@@ -4,6 +4,7 @@
  * 规则来自 2026-07-20 的知乎网页 HAR：
  * - 首页推荐接口：/api/v3/feed/topstory/recommend
  * - 广告项：data[].type === "feed_advert"
+ * - 问题页首屏广告：initialState.question.adverts
  * - 关注信息流：/api/v3/moments
  * - 普通回答也会带空 paid_info，只有非空付费标记才视为盐选内容
  * - 顶部入口：/project-square、/fiore/h5/vip-web
@@ -62,6 +63,58 @@
 
   function isObject(value) {
     return value !== null && typeof value === "object" && !Array.isArray(value);
+  }
+
+  function stringifyForHtmlScript(value) {
+    return JSON.stringify(value)
+      .replace(/&/g, "\\u0026")
+      .replace(/</g, "\\u003C")
+      .replace(/>/g, "\\u003E")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029");
+  }
+
+  function cleanQuestionAdvertisements(html, stats) {
+    var initialDataPattern =
+      /(<script\b[^>]*\bid=["']js-initialData["'][^>]*>)([\s\S]*?)(<\/script>)/i;
+
+    return html.replace(initialDataPattern, function (
+      original,
+      openingTag,
+      jsonText,
+      closingTag
+    ) {
+      try {
+        var initialData = JSON.parse(jsonText);
+        var initialState = initialData && initialData.initialState;
+        var question = initialState && initialState.question;
+        var advertisements = question && question.adverts;
+
+        if (
+          advertisements === null ||
+          typeof advertisements !== "object"
+        ) {
+          return original;
+        }
+
+        var advertisementCount = Array.isArray(advertisements)
+          ? advertisements.length
+          : Object.keys(advertisements).length;
+        if (advertisementCount === 0) return original;
+
+        question.adverts = Array.isArray(advertisements) ? [] : {};
+        stats.questionAdvertisements += advertisementCount;
+
+        return (
+          openingTag +
+          stringifyForHtmlScript(initialData) +
+          closingTag
+        );
+      } catch (error) {
+        console.log("知乎网页净化：问题页初始数据解析失败，仅注入隐藏样式");
+        return original;
+      }
+    });
   }
 
   function hasMeaningfulPaidInfo(object) {
@@ -185,7 +238,16 @@
   var trimmed = body.replace(/^\s+/, "");
 
   if (/text\/html/i.test(contentType) || /^<!doctype\s+html|^<html/i.test(trimmed)) {
-    $done({ body: injectStyle(body) });
+    var htmlStats = { questionAdvertisements: 0 };
+    var cleanedHtml = cleanQuestionAdvertisements(body, htmlStats);
+    if (htmlStats.questionAdvertisements > 0) {
+      console.log(
+        "知乎网页净化：移除问题页广告 " +
+          htmlStats.questionAdvertisements +
+          " 条"
+      );
+    }
+    $done({ body: injectStyle(cleanedHtml) });
     return;
   }
 
