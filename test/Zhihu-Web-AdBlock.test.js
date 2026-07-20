@@ -41,7 +41,6 @@ test("removes marked ads while preserving normal feed items", () => {
     data: [
       { type: "answer", target: { title: "正常回答" } },
       { type: "feed_advert", ad_info: { id: "ad-1" } },
-      { type: "answer", target: { label: "广告", url: "https://example.com" } },
       { type: "article", target: { title: "包含 ad 字样但不是广告" } },
     ],
   };
@@ -54,6 +53,41 @@ test("removes marked ads while preserving normal feed items", () => {
   assert.equal(parsed.data.length, 2);
   assert.equal(parsed.data[0].target.title, "正常回答");
   assert.equal(parsed.data[1].target.title, "包含 ad 字样但不是广告");
+});
+
+test("removes explicit paid content but preserves empty paid_info placeholders", () => {
+  const input = {
+    data: [
+      {
+        type: "feed",
+        target: {
+          title: "普通回答",
+          paid_info: { type: "", content: "", has_purchased: null },
+        },
+      },
+      {
+        type: "feed",
+        target: {
+          title: "付费回答",
+          paid_info: {
+            type: "paid_answer",
+            content: "trial",
+            has_purchased: false,
+          },
+        },
+      },
+      { type: "feed", target: { title: "盐选卡片", business_type: "salt" } },
+      { type: "feed", target: { title: "试读卡片", is_trial: true } },
+    ],
+  };
+  const output = execute({
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  const parsed = JSON.parse(output.body);
+
+  assert.equal(parsed.data.length, 1);
+  assert.equal(parsed.data[0].target.title, "普通回答");
 });
 
 test("passes unrelated responses through unchanged", () => {

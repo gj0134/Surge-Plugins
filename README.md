@@ -3,6 +3,7 @@
 用于 Safari 等浏览器访问知乎网页版时：
 
 - 屏蔽首页信息流广告和常见侧栏广告；
+- 过滤带明确付费标记的盐选、会员试读内容；
 - 拒绝知乎广告曝光/点击统计请求；
 - 隐藏顶部导航中的 `AI Works` 和`故事`；
 - 保留关注、推荐、热榜、专栏、圈子及正常回答。
@@ -12,10 +13,10 @@
 在 Surge 的模块页面选择“从 URL 安装”，粘贴：
 
 ```text
-https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule?v=1.0.1
+https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sgmodule?v=2.0.0
 ```
 
-启用模块后，确认 Surge 的「脚本」和「MITM」功能已启用，并已在 macOS 中安装、信任 Surge 的 MITM 证书，然后重新载入知乎页面。
+启用模块后，确认 Surge 的「脚本」和「MITM」主开关已启用，并已在 macOS 中安装、信任 Surge 的 MITM 证书，然后重新载入知乎页面。模块只能把 `www.zhihu.com` 加入 MITM 主机名，不能替你打开全局 MITM 主开关。
 
 ## 本地安装
 
@@ -31,8 +32,10 @@ https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/Zhihu-Web-AdBlock.sg
 本地脚本测试：
 
 ```bash
-node --test test/Zhihu-Web-AdBlock.test.js
+node --test test/Zhihu-Web-AdBlock.test.js test/Zhihu-Web-AdBlock.har.test.js
 ```
+
+HAR 回归测试会在本地存在 `www.zhihu.com.har` 时运行；抓包文件由 `.gitignore` 排除，不会提交到仓库。
 
 Surge 配置语法：
 
