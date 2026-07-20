@@ -65,7 +65,7 @@ test("does not remove hot-search entries based on display labels", () => {
     data: {
       realtime: [
         { word: "正常热搜", rank: 1 },
-        { word: "商业词条", rank: null, small_icon_desc: "商" },
+        { word: "商业词条", rank: null, small_icon_desc: "商", dot_icon: 1 },
         { word: "辟谣词条", rank: null, small_icon_desc: "" },
         { word: "新词条", rank: 2, small_icon_desc: "新" },
       ],
@@ -79,7 +79,7 @@ test("does not remove hot-search entries based on display labels", () => {
 
   assert.deepEqual(
     parsed.data.realtime.map((item) => item.word),
-    ["正常热搜", "商业词条", "辟谣词条", "新词条"]
+    ["正常热搜", "辟谣词条", "新词条"]
   );
   assert.deepEqual(parsed.data.unrelatedCards, [
     { id: "business-category", small_icon_desc: "商" },
