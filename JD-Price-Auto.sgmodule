@@ -1,7 +1,7 @@
 #!name=京东比价（慢慢买自动初始化）
-#!desc=首次打开慢慢买「我的」，自动保存设备参数。进入京东商品详情查看历史价。价格查询使用 wf021325 的原版脚本。
+#!desc=首次打开慢慢买「我的」，自动保存设备参数。进入京东商品详情查看历史价。初始化与查询均使用可莉 Loon 插件引用的 JD_Price.js。
 [Script]
-慢慢买参数初始化 = type=http-request,pattern=^https://apapia-sqk-weblogic\.manmanbuy\.com/baoliao/center/menu(?:\?|$),requires-body=true,script-path=https://raw.githubusercontent.com/gj0134/Surge-Plugins/main/JD-Price-Init.js
-京东历史价 = type=http-response,pattern=^https://in\.m\.jd\.com/product/graphext/\d+\.html,requires-body=true,timeout=60,script-path=https://raw.githubusercontent.com/wf021325/qx/master/js/jd_price.js
+慢慢买参数初始化 = type=http-request,pattern=(?i)^https?://apapia-sqk-weblogic\.manmanbuy\.com/baoliao/center/menu$,requires-body=true,timeout=10,script-path=https://kelee.one/Resource/JavaScript/JD/JD_Price.js
+京东历史价 = type=http-response,pattern=(?i)^https?://in\.m\.jd\.com/product/graphext/\d+\.html,requires-body=true,timeout=10,script-path=https://kelee.one/Resource/JavaScript/JD/JD_Price.js
 [MITM]
 hostname = %APPEND% apapia-sqk-weblogic.manmanbuy.com, in.m.jd.com
