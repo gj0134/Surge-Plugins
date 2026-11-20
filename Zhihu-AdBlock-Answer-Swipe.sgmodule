@@ -1,0 +1,41 @@
+#!name=知乎净化（去广告 + 隐藏付费内容）
+#!desc=基于知乎 11.1.0 实际抓包：移除开屏、信息流、连续浏览及页面广告，隐藏盐选/付费试读内容，并保留回答上下切换。
+#!author=gj0134
+
+[Body Rewrite]
+http-response-jq ^https:\/\/m-cloud\.zhihu\.com\/api\/cloud\/zhihu\/config\/all\? 'def drop_keys: {"km_httpdns_new_config_tars":true,"preFetchHttpDns":true,"httpdns_detector_use_concurrent":true,"httpdns_use_memory_cache":true,"httpdns_new_config_tars":true,"coreNetworkConf_useTars":true,"km_coreNetworkConf_useTars":true,"sugarQuicConfig":true,"quic_dns_detect_enable":true,"quicMixAB":true,"quic_downgrade_enable":true,"quic_priority_strategy":true,"quic_check_health_enable":true,"tquic_configuration":true,"networkExprimentList":true,"tars_ab_list":true,"zaSetExtraRequestHeader":true}; .data.configs |= map(select((drop_keys[.configKey] // false) | not) | if (.configValue | type) == "object" then del(.configValue.delayHttpdns, .configValue.dnsParser, .configValue.HTTPDNS) else . end)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/ad-style-service\/request(?:\?.*)?$ '[]'
+http-response-jq ^https:\/\/(?:api\.zhihu\.com\/(?:topstory\/recommend|(?:simple-)?next-render|(?:v4\/)?questions\/\d+\/(?:feeds|answers))|www\.zhihu\.com\/api\/v4\/questions\/\d+\/answers)(?:\?.*)?$ 'def is_ad: ([.. | objects | select((.type? | IN("ad", "feed_advert", "market_card")) or (.extra.type? == "SvipActivity") or has("ad") or has("promotion_extra") or (.extra.promotion? != null) or (.extra.business_ext_map.is_force_insert? == true) or (((.adjson? // "") | type) == "string" and ((.adjson? // "") | length > 0)))] | length > 0); def is_paid: ([.. | objects | select((.is_paid? == true) or (.is_trial? == true) or (.need_pay? == true) or (((.business_type? // "") | type) == "string" and ((.business_type? // "") | test("paid|vip|salt|market|ebook"; "i"))) or (((.card_type? // "") | type) == "string" and ((.card_type? // "") | test("paid|vip|salt|market|ebook"; "i"))))] | length > 0) or (tostring | contains("盐选推荐")); .data |= (if type == "array" then map(select((is_ad or is_paid) | not) | del(.ad_info, .third_business, .target.ad_info, .target.third_business)) else . end) | del(.ad_info, .adjson, .commercial_info, .promotion_info)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/topstory\/hot-lists(?:\/[^?]+)?(?:\?.*)?$ 'def is_paid: ([.. | objects | select((.is_paid? == true) or (.is_trial? == true) or (.need_pay? == true) or (((.business_type? // "") | type) == "string" and ((.business_type? // "") | test("paid|vip|salt|market|ebook"; "i"))))] | length > 0) or (tostring | contains("盐选推荐")); .data |= (if type == "array" then map(select(((.type? | IN("hot_list_feed", "hot_list_feed_video")) and ((is_paid) | not)))) else . end)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/v2\/topstory\/hot-lists\/everyone-seeing(?:\?.*)?$ 'def is_paid: ([.. | objects | select((.is_paid? == true) or (.is_trial? == true) or (.need_pay? == true) or (((.business_type? // "") | type) == "string" and ((.business_type? // "") | test("paid|vip|salt|market|ebook"; "i"))))] | length > 0) or (tostring | contains("盐选推荐")); .data.data |= (if type == "array" then map(select(((.type? | IN("hot_list_feed", "hot_list_feed_video")) and ((is_paid) | not)))) else . end)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/guide_center\/strategy(?:\?.*)?$ '.data.strategy_data = []'
+http-response-jq ^https:\/\/api\.zhihu\.com\/root\/tab\/v\d(?:\?.+)?$ '.tab_list |= map(select(.tab_type == "follow" or .tab_type == "recommend" or .tab_type == "hot" or .tab_type == "ring_tab"))'
+http-response-jq ^https:\/\/api\.zhihu\.com\/comment_v\d\/(answers|pins|articles)\/\d+\/root_comment\? 'del(.ad_plugin_infos, .atmosphere_voting_config)'
+http-response-jq ^https:\/\/(api|page-info)(?:\.zhihu)?\.com\/answers\/v\d\/\d+(?:\?.*)?$ 'del(.third_business, .float_search_word)'
+http-response-jq ^https:\/\/(api|page-info)(?:\.zhihu)?\.com\/answers\/v\d\/\d+(?:\?.*)?$ '.structured_content.segments |= map(select(.type != "card"))'
+http-response-jq ^https:\/\/api\.zhihu\.com\/topstory\/recommend\? '.data[]?.children |= (if type == "array" then map(select(.id != "ring")) else . end)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/(articles|answers|pins)\/v\d\/\d+\? 'del(.third_business, .ring_info, .interaction_bar_plugins)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/comment_v\d\/answers\/\d+\/list-headers$ 'del(.continuous_consumption_module)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/podcasts\/hub\/v\d$ 'del(.banners)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/search\/recommend_query\/v\d\? '.recommend_queries.queries |= map(select(.type == "normal"))'
+http-response-jq ^https:\/\/api\.zhihu\.com\/search_v\d\? 'del(.pendant)'
+http-response-jq ^https:\/\/api\.zhihu\.com\/search\/tabs\? '.data |= map(select(.t | IN("general", "ai_zhida", "recent", "people", "zvideo", "ring", "topic", "podcast", "column", "pin", "favlist")))'
+http-response-jq ^https:\/\/api\.zhihu\.com\/people\/self$ 'del(.vip_info.entrance_new.right_button, .vip_info.entrance_v2)'
+
+[Map Local]
+^https:\/\/api\.zhihu\.com\/commercial_api\/ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/content-promotion\/(?:[^?]+)(?:\?.*)?$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/event-center\/recommend\/window(?:\?.*)?$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/consumption_events\/\d+(?:\?.*)?$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/search\/preset_words\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/search\/related_queries\/question\/\d+$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/zhida\.zhihu\.com\/ai_ingress\/knowledge\/square\/categories\/feeds\?categoryId=1%7D$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/zhida\.zhihu\.com\/ai_ingress\/ai_chat\/guidance$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/content-distribution-core\/bubble\/common\/show$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/www\.zhihu\.com\/api\/v\d\/members\/homepage_card$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/people\/homepage_entry_v\d$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/kvip\/right\/my_card\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https:\/\/api\.zhihu\.com\/unlimited\/go\/my_card\/v\d\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% m-cloud.zhihu.com, api.zhihu.com, www.zhihu.com, page-info.zhihu.com, zhida.zhihu.com

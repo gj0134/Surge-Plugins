@@ -1,0 +1,17 @@
+#!name = 微博国际版去广告
+#!desc = 移除微博国际版品牌推荐、荐读、粉丝头条、热门视频、会员推广和开屏广告。基于微博国际版 iOS 7.1.7 实际抓包制作。
+#!author = gj0134
+
+[Body Rewrite]
+http-response-jq ^https:\/\/api\.weibo\.cn\/2\/ad\/weibointl(?:\?.*)?$ '.data = []'
+http-response-jq ^https:\/\/bootpreload\.uve\.weibo\.com\/v1\/ad\/preload(?:\?.*)?$ '.ads = []'
+http-response-jq ^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^#]*&)?a=open_app(?:&[^#]*)?$ 'del(.data.close_ad_setting) | .data.cytad_show_max_count = 0 | .data.new_ad_status_hot = 0 | .data.new_ad_status_search = 0 | .data.new_ad_status_timeline = 0 | .data.uve_feed_ad = 0 | .data.uve_feed_ad_block = 1 | .data.uve_hot_ad = 0 | .data.uve_space_fat = 0 | .data.uve_topfans_disable = 1 | .data.video_recommend_count = 0 | .data.show_intl_vip = 0 | .data.intl_vip_lead = 0 | .data.vip_lead = 0 | .data.vip_lite_index_recommand = 0 | .data.vip_lite_trend_recommand = 0 | .data.me_not_intlvip = 0 | .data.me_notvip = 0 | .data.vip_title_blog = ""'
+http-response-jq ^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^#]*&)?a=get_coopen_ads(?:&[^#]*)?$ '.data.display_ad = 0 | .data.close_cyt = 1 | .data.pic_ad = [] | .data.ad_list = [] | .data.ad_type = "" | .data.spare_ad_type = "" | .data.uve_ad_scene = "" | .data.uve_ad_scene_insert_comment = "" | .data.uve_ad_scene_insert_hot = "" | .data.uve_ad_scene_insert_normal = "" | .data.uve_ad_scene_insert_search = "" | .data.uve_ad_scene_insert_video = ""'
+http-response-jq ^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^#]*&)?a=user_center(?:&[^#]*)?$ '.data.cards |= map(if (.items | type) == "array" then .items |= map(select(.type != "personal_vip" and .type != "ic_profile_wallpaper")) else . end) | .data.cards |= map(select((.items | type) != "array" or (.items | length) > 0))'
+http-response-jq ^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^#]*&)?a=trends(?:&[^#]*)?$ 'del(.data.banner, .data.native_content)'
+
+[Map Local]
+^https:\/\/bootrealtime\.uve\.weibo\.com\/v2\/ad\/realtime(?:\?.*)?$ data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% api.weibo.cn, bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, weibointl.api.weibo.cn

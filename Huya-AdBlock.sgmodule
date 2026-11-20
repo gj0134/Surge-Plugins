@@ -1,0 +1,21 @@
+#!name = 虎牙直播去广告
+#!desc = 关闭虎牙直播间活动广告弹层，移除游戏推广与奖励广告素材，并阻断抓包命中的第三方广告 SDK 上报。基于虎牙 iOS 13.4.0 实际抓包制作。
+#!author = gj0134
+
+[Rule]
+DOMAIN,sdkreport.e.qq.com,REJECT
+DOMAIN,receiver.tdm.qq.com,REJECT
+
+[Map Local]
+^https:\/\/gameresource\.itop\.qq\.com\/[^?#]+\.(?:jpe?g|png|webp)(?:\?.*)?$ data-type=text data="" status-code=204
+^https:\/\/gr\.msstatic\.com\/gamecenter\/image\/[^?#]+\.(?:jpe?g|png|webp)(?:\?.*)?$ data-type=text data="" status-code=204
+^https:\/\/livewebbs2\.msstatic\.com\/(?:liwumanghe120|AdRewards(?:DinnerQuest|PackageTaskGuide))\.png(?:\?.*)?$ data-type=text data="" status-code=204
+
+[URL Rewrite]
+^https?:\/\/cdn\.wup\.huya\.com\/launch\/queryHttpDns(?:\?.*)?$ - reject
+
+[Script]
+关闭虎牙直播间活动弹层 = type=http-response,pattern=^https:\/\/zt\.huya\.com\/(?:(?:17250f13|45e2e939)\/mobile\/index\.html(?:\?.*)?|[^\/?#]+\/mobile\/index\.html\?[^#]*window_activity_id=[^#]*)$,requires-body=true,timeout=10,script-path=https://raw.githubusercontent.com/gj0134/Loon-Plugins/main/scripts/huya-dismiss-popup.js
+
+[MITM]
+hostname = %APPEND% zt.huya.com, gameresource.itop.qq.com, gr.msstatic.com, livewebbs2.msstatic.com, cdn.wup.huya.com
