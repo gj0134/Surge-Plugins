@@ -1,5 +1,5 @@
 # Anthropic / Claude — Surge RULE-SET
-# Sources: Anthropic APK 1.261117.19 domain inventory and supplemental host list
+# Sources: Anthropic APK 1.261117.19 domain inventory and supplemental host and network lists
 
 DOMAIN-SUFFIX,ant.dev
 DOMAIN-SUFFIX,anthropic.ai
@@ -25,11 +25,18 @@ DOMAIN-SUFFIX,claudestudio.com
 DOMAIN-SUFFIX,claudeusercontent.com
 
 # Partner and shared service domains
+DOMAIN-SUFFIX,auth0.com
+DOMAIN-SUFFIX,b-cdn.net
+DOMAIN-SUFFIX,cloudflare.net
 DOMAIN-SUFFIX,datadoghq.com
 DOMAIN-SUFFIX,fedstart.com
 DOMAIN-SUFFIX,findahelpline.com
+DOMAIN-SUFFIX,ghost.io
 DOMAIN-SUFFIX,googleapis.com
+DOMAIN-SUFFIX,intercom-messenger.com
 DOMAIN-SUFFIX,intercom.io
+DOMAIN-SUFFIX,intercomassets.com
+DOMAIN-SUFFIX,intercomcdn.com
 DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,siftscience.com
 DOMAIN-SUFFIX,stripe.com
@@ -44,7 +51,13 @@ DOMAIN-SUFFIX,browser-intake-ddog-gov.com
 DOMAIN-SUFFIX,browser-intake-us3-datadoghq.com
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
 DOMAIN-SUFFIX,google.com
+
+# Verification and analytics
 DOMAIN-SUFFIX,hcaptcha.com
+DOMAIN-SUFFIX,statsigapi.net
+DOMAIN-SUFFIX,usefathom.com
+DOMAIN-SUFFIX,withpersona.com
+DOMAIN-SUFFIX,yoti.com
 
 # Claude Code updates, plugins, and desktop extensions
 # https://code.claude.com/docs/en/network-config#network-access-requirements
@@ -65,3 +78,9 @@ DOMAIN-SUFFIX,jquery.com
 DOMAIN-SUFFIX,jsdelivr.net
 DOMAIN-SUFFIX,tailwindcss.com
 DOMAIN-SUFFIX,unpkg.com
+
+# Supplemental IPv4 ranges
+IP-CIDR,34.8.0.0/16,no-resolve
+IP-CIDR,160.79.104.0/21,no-resolve
+IP-CIDR,153.61.208.0/20,no-resolve
+IP-CIDR,153.61.224.0/22,no-resolve
