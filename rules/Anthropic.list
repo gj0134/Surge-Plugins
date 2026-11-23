@@ -24,18 +24,12 @@ DOMAIN-SUFFIX,claudestudio.ai
 DOMAIN-SUFFIX,claudestudio.com
 DOMAIN-SUFFIX,claudeusercontent.com
 
-# Partner hosts and Google MCP endpoints
-DOMAIN-SUFFIX,claude.fedstart.com
-DOMAIN-SUFFIX,claude.findahelpline.com
-DOMAIN-SUFFIX,calendarmcp.googleapis.com
-DOMAIN-SUFFIX,drivemcp.googleapis.com
-DOMAIN-SUFFIX,gmailmcp.googleapis.com
-
-# Shared service endpoints
-DOMAIN-SUFFIX,api-iam.intercom.io
-DOMAIN-SUFFIX,fcmtoken.googleapis.com
-DOMAIN-SUFFIX,nexus-websocket-a.intercom.io
-DOMAIN-SUFFIX,r.stripe.com
+# Partner and shared service domains
+DOMAIN-SUFFIX,datadoghq.com
+DOMAIN-SUFFIX,fedstart.com
+DOMAIN-SUFFIX,findahelpline.com
+DOMAIN-SUFFIX,googleapis.com
+DOMAIN-SUFFIX,intercom.io
+DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,siftscience.com
-DOMAIN-SUFFIX,us.sentry.io
-DOMAIN-SUFFIX,us5.datadoghq.com
+DOMAIN-SUFFIX,stripe.com
