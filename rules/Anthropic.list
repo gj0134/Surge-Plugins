@@ -43,4 +43,25 @@ DOMAIN-SUFFIX,browser-intake-datadoghq.eu
 DOMAIN-SUFFIX,browser-intake-ddog-gov.com
 DOMAIN-SUFFIX,browser-intake-us3-datadoghq.com
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
+DOMAIN-SUFFIX,google.com
 DOMAIN-SUFFIX,hcaptcha.com
+
+# Claude Code updates, plugins, and desktop extensions
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+DOMAIN-SUFFIX,brew.sh
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,githubusercontent.com
+DOMAIN-SUFFIX,googlesource.com
+DOMAIN-SUFFIX,npmjs.org
+DOMAIN-SUFFIX,pypi.org
+DOMAIN-SUFFIX,pythonhosted.org
+
+# Desktop artifacts, connector icons, and Linux dictionaries
+# https://code.claude.com/docs/en/desktop#network-access-requirements
+DOMAIN-SUFFIX,cloudflare.com
+DOMAIN-SUFFIX,gstatic.com
+DOMAIN-SUFFIX,gvt1.com
+DOMAIN-SUFFIX,jquery.com
+DOMAIN-SUFFIX,jsdelivr.net
+DOMAIN-SUFFIX,tailwindcss.com
+DOMAIN-SUFFIX,unpkg.com
