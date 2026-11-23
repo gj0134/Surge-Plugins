@@ -1,18 +1,25 @@
 # Anthropic / Claude — Surge RULE-SET
-# Source: Anthropic APK 1.261117.19 domain inventory
+# Sources: Anthropic APK 1.261117.19 domain inventory and supplemental host list
 
 DOMAIN-SUFFIX,ant.dev
 DOMAIN-SUFFIX,anthropic.ai
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,anthropic.dev
+DOMAIN-SUFFIX,anthropic.team
+DOMAIN-SUFFIX,antspace.dev
+DOMAIN-SUFFIX,chatbotclaude.com
+DOMAIN-SUFFIX,clau.de
 DOMAIN-SUFFIX,claude.ai
 DOMAIN-SUFFIX,claude.app
 DOMAIN-SUFFIX,claude.com
 DOMAIN-SUFFIX,claude.design
+DOMAIN-SUFFIX,claude.dev
 DOMAIN-SUFFIX,claude.new
 DOMAIN-SUFFIX,claude.site
+DOMAIN-SUFFIX,claudeacademy.com
 DOMAIN-SUFFIX,claudemcpclient.com
 DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN-SUFFIX,claudepages.dev
 DOMAIN-SUFFIX,claudestudio.ai
 DOMAIN-SUFFIX,claudestudio.com
 DOMAIN-SUFFIX,claudeusercontent.com
@@ -23,3 +30,13 @@ DOMAIN,claude.findahelpline.com
 DOMAIN,calendarmcp.googleapis.com
 DOMAIN,drivemcp.googleapis.com
 DOMAIN,gmailmcp.googleapis.com
+
+# Shared service endpoints
+DOMAIN,api-iam.intercom.io
+DOMAIN,fcmtoken.googleapis.com
+DOMAIN,http-intake.logs.us5.datadoghq.com
+DOMAIN,nexus-websocket-a.intercom.io
+DOMAIN,r.stripe.com
+DOMAIN,siftscience.com
+DOMAIN,us.sentry.io
+DOMAIN,us5.datadoghq.com
