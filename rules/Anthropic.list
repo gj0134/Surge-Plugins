@@ -41,7 +41,7 @@ DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,siftscience.com
 DOMAIN-SUFFIX,stripe.com
 
-# Desktop sign-in and performance reporting
+# Desktop performance reporting
 # https://claude.com/docs/third-party/claude-desktop/telemetry
 DOMAIN-SUFFIX,browser-intake-ap1-datadoghq.com
 DOMAIN-SUFFIX,browser-intake-ap2-datadoghq.com
@@ -50,7 +50,6 @@ DOMAIN-SUFFIX,browser-intake-datadoghq.eu
 DOMAIN-SUFFIX,browser-intake-ddog-gov.com
 DOMAIN-SUFFIX,browser-intake-us3-datadoghq.com
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
-DOMAIN-SUFFIX,google.com
 
 # Verification and analytics
 DOMAIN-SUFFIX,hcaptcha.com
@@ -58,16 +57,6 @@ DOMAIN-SUFFIX,statsigapi.net
 DOMAIN-SUFFIX,usefathom.com
 DOMAIN-SUFFIX,withpersona.com
 DOMAIN-SUFFIX,yoti.com
-
-# Claude Code updates, plugins, and desktop extensions
-# https://code.claude.com/docs/en/network-config#network-access-requirements
-DOMAIN-SUFFIX,brew.sh
-DOMAIN-SUFFIX,github.com
-DOMAIN-SUFFIX,githubusercontent.com
-DOMAIN-SUFFIX,googlesource.com
-DOMAIN-SUFFIX,npmjs.org
-DOMAIN-SUFFIX,pypi.org
-DOMAIN-SUFFIX,pythonhosted.org
 
 # Desktop artifacts, connector icons, and Linux dictionaries
 # https://code.claude.com/docs/en/desktop#network-access-requirements
